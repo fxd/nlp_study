@@ -144,12 +144,14 @@ def test_mlp():
         "Alarm-Update"
     ])
 
+    # ConvergenceWarning: Stochastic Optimizer: Maximum iterations (100) reached and the optimization hasn't converged yet
+    # 收敛警告：随机优化器：已达到最大迭代次数（100次），但优化尚未收敛
     model = MLPClassifier(
-        hidden_layer_sizes=(10,), # 1层隐藏层，10个神经元
-        max_iter=100, # 100次训练轮数
+        hidden_layer_sizes=(5,), # 1层隐藏层，10个神经元, 8 个样本用 10 个神经元容易 “过拟合”，5 个神经元更适配小样本，收敛更快
+        max_iter=500, # 100次训练轮数,增加训练轮数，给模型足够时间调整参数到最优
         activation='relu', # 激活函数
         random_state=42, # 固定随机种子，每次结果都一样
-        learning_rate_init=0.001 # 学习率，每轮调整参数幅度？？
+        learning_rate_init=0.01 # 0.001学习率，调大学习率，让每轮调参的 “步子” 变大，更快走到误差最小的位置
     )
     model.fit(input_feature,labels)
     pred = model.predict([[1,0,0,0,0]])
